@@ -1,0 +1,52 @@
+#include <stdio.h>
+
+void displayMenu() {
+    printf("\n---Fast Food Menu---\n");
+    printf("1. Burger -$5.00\n");
+    printf("2. Pizza -$8.00\n");
+    printf("3. Fries -$3.00\n");
+    printf("4. Coke -$2.00\n");
+    printf("5. Exit\n");
+}
+
+int main() {
+    int choice, quantity;
+    float total = 0.0;
+    int order = 1;
+
+    while(order) {
+        displayMenu();
+        printf("Enter your choice (1-5): ");
+        scanf("%d", &choice);
+
+        if(choice == 5) {
+            break;
+        }
+
+        printf("Enter quantity: ");
+        scanf("%d", &quantity);
+
+        // Corrected switch case syntax from ; to :
+        switch(choice) {
+            case 1:
+                total += 5.0 * quantity;
+                break;
+            case 2:
+                total += 8.0 * quantity;
+                break;
+            case 3:
+                total += 3.0 * quantity;
+                break;
+            case 4:
+                total += 2.0 * quantity;
+                break;
+            default:
+                printf("Invalid choice!\n");
+        }
+        printf("Current Total: $%.2f\n", total);
+    }
+    printf("\nFinal Bill Amount: $%.2f\n", total);
+    printf("Thank you for ordering!\n");
+
+    return 0;
+}
