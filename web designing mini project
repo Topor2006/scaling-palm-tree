@@ -1,0 +1,210 @@
+Date: April 13, 2026
+WEB Designing MINI Project
+Member: Philip Elvis Topor & Darius Nya
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fast Food Order</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background: #ff0505;
+    }
+        
+
+    header {
+        background: #8B0000; /* deep red */
+        color: white;
+        text-align: center;
+        padding: 20px;
+        font-size: 28px;
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: auto;
+        padding: 20px;
+    }
+
+    .menu-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #f9f9f9;
+        margin: 10px 0;
+        padding: 15px;
+        border-left: 6px solid #228B22; /* forest green */
+        border-radius: 8px;
+        transition: transform 0.2s;
+    }
+
+    .menu-item:hover {
+        transform: scale(1.02);
+    }
+
+    .menu-item h3 {
+        margin: 0;
+        color: #8B0000;
+    }
+
+    .controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    button {
+        background: #228B22;
+        color: white;
+        border: none;
+        padding: 6px 10px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    button:hover {
+        background: #1b6e1b;
+    }
+
+     .box{
+        animation: pulse 2s infinite;
+    }
+    @keyframes pulse{
+        0%, 100% { transform: scale(1);}
+        50% { transform: scale(1,2);}
+    }
+
+    .total-box {
+        margin-top: 20px;
+        padding: 20px;
+        background: #e20000;
+        color: rgb(250, 0, 0);
+        border-radius: 10px;
+        text-align: center;
+        font-size: 22px;
+    }
+
+    .order-btn {
+        margin-top: 15px;
+        padding: 10px 20px;
+        font-size: 18px;
+        background: #228B22;
+        border: none;
+        color: white;
+        cursor: pointer;
+        border-radius: 6px;
+    }
+
+    .order-btn:hover {
+        background: #084608;
+    }
+
+    footer {
+        text-align: center;
+        padding: 10px;
+        margin-top: 20px;
+        background: #074e07;
+        color: white;
+    }
+</style>
+</head>
+
+<body>
+
+<header>🍔 Fast Food Ordering System</header>
+
+<div class="container" id="menu"></div>
+
+<div class="container total-box">
+    Total: ₹<span id="total">0</span>
+    <br>
+    <button class="order-btn" onclick="placeOrder()">Place Order</button>
+</div>
+
+<footer>Fresh • Fast • Delicious</footer>
+
+<script>
+const menuItems = [
+    { name: "Pizza", price: 250 },
+    { name: "Burger", price: 120 },
+    { name: "French Fries", price: 90 },
+    { name: "Ice Cream", price: 80 },
+    { name: "Cold Drink", price: 60 },
+    { name: "Sandwich", price: 100 },
+    { name: "Pasta", price: 180 },
+    { name: "Hot Dog", price: 110 }
+];
+
+let cart = {};
+
+const menuDiv = document.getElementById("menu");
+
+menuItems.forEach((item, index) => {
+    cart[index] = 0;
+
+    const div = document.createElement("div");
+    div.classList.add("menu-item");
+
+    div.innerHTML = `
+        <h3>${item.name} - ₹${item.price}</h3>
+        <div class="controls">
+            <button onclick="updateQty(${index}, -1)">-</button>
+            <span id="qty-${index}">0</span>
+            <button onclick="updateQty(${index}, 1)">+</button>
+        </div>
+    `;
+
+    menuDiv.appendChild(div);
+});
+
+function updateQty(index, change) {
+    cart[index] += change;
+
+    if (cart[index] < 0) cart[index] = 0;
+
+    document.getElementById(`qty-${index}`).innerText = cart[index];
+
+    calculateTotal();
+}
+
+function calculateTotal() {
+    let total = 0;
+
+    for (let i in cart) {
+        total += cart[i] * menuItems[i].price;
+    }
+
+    document.getElementById("total").innerText = total;
+}
+
+function placeOrder() {
+    let orderSummary = "Your Order:\n";
+    let hasItem = false;
+
+    for (let i in cart) {
+        if (cart[i] > 0) {
+            orderSummary += `${menuItems[i].name} x ${cart[i]}\n`;
+            hasItem = true;
+        }
+    }
+
+    if (!hasItem) {
+        alert("Please select at least one item!");
+        return;
+    }
+
+    orderSummary += "\nTotal: ₹" + document.getElementById("total").innerText;
+
+    alert(orderSummary);
+}
+</script>
+
+</body>
+</html>
+
